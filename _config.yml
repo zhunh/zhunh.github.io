@@ -103,7 +103,9 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: 'git'
+  repo: "https://github.com/zhunh/zhunh.github.io.git"
+  branch: [gh_pages]
 symbols_count_time:
   symbols: true
   item_text_total: true

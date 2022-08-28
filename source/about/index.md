@@ -1,11 +1,11 @@
 ---
-title: about
+title: 关于我
 date: 2020-05-31 16:30:56
 type: "about"
 comments: false
 ---
 
-​		我目前工作主要从事前端开发，对vue框架有深入了解，对JavaScript相关项目十分感兴趣，希望有机会与您交流。
+​		我是一个程序员，目前从事前端开发，对vue框架有深入了解，对JavaScript相关项目十分感兴趣，希望能有机会与您交流。
 
 <table>
   <tr align="center" style="background:#eee;">
