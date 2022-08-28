@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有一个组件grid01，通常使用它 : &lt;grid01&gt;&lt;&#x2F;grid01&gt;，假如我们想在标签里面渲染内容：&lt;grid01&gt;&lt;h1&gt;你好&lt;&#x2F;h1&gt;&lt;&#x2F;grid01&gt;，这时就可以使用插槽。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue插槽使用">
+<meta property="og:url" content="http://example.com/2020/02/12/2020-02-12-Vue%E6%8F%92%E6%A7%BD%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="code-learing">
+<meta property="og:description" content="有一个组件grid01，通常使用它 : &lt;grid01&gt;&lt;&#x2F;grid01&gt;，假如我们想在标签里面渲染内容：&lt;grid01&gt;&lt;h1&gt;你好&lt;&#x2F;h1&gt;&lt;&#x2F;grid01&gt;，这时就可以使用插槽。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-26T14:59:50.776Z">
+<meta property="article:author" content="zhunh">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Vue.js">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/02/12/2020-02-12-Vue%E6%8F%92%E6%A7%BD%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/02/12/2020-02-12-Vue%E6%8F%92%E6%A7%BD%E4%BD%BF%E7%94%A8/","path":"2020/02/12/2020-02-12-Vue插槽使用/","title":"Vue插槽使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vue插槽使用 | code-learing</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">code-learing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hi there, my friend</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">基础用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">进阶用法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhunh"
+      src="/images/lcf.jpeg">
+  <p class="site-author-name" itemprop="name">zhunh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhunh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhunh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/12/2020-02-12-Vue%E6%8F%92%E6%A7%BD%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/lcf.jpeg">
+      <meta itemprop="name" content="zhunh">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code-learing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vue插槽使用 | code-learing">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue插槽使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00+08:00">2020-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-26 22:59:50" itemprop="dateModified" datetime="2022-08-26T22:59:50+08:00">2022-08-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>有一个组件grid01，通常使用它 :
+<code>&lt;grid01&gt;&lt;/grid01&gt;</code>，假如我们想在标签里面渲染内容：<code>&lt;grid01&gt;&lt;h1&gt;你好&lt;/h1&gt;&lt;/grid01&gt;</code>，这时就可以使用插槽。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="基础用法">基础用法</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;grid01&quot;</span>,&#123;</span><br><span class="line">	<span class="attr">template</span>:<span class="string">`</span></span><br><span class="line"><span class="string">		&lt;div&gt;</span></span><br><span class="line"><span class="string">			&lt;h1&gt;你好&lt;/h1&gt;</span></span><br><span class="line"><span class="string">			&lt;slot&gt;&lt;/slot&gt;</span></span><br><span class="line"><span class="string">		&lt;/div&gt;</span></span><br><span class="line"><span class="string">	`</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> vm = <span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">	<span class="attr">el</span>: <span class="string">&quot;#app&quot;</span>,</span><br><span class="line">	<span class="attr">data</span>: &#123;&#125;,</span><br><span class="line">	<span class="attr">template</span>:<span class="string">`</span></span><br><span class="line"><span class="string">		&lt;div id=&quot;app&quot;&gt;</span></span><br><span class="line"><span class="string">			&lt;grid01&gt;</span></span><br><span class="line"><span class="string">				&lt;p&gt;大海&lt;/p&gt;</span></span><br><span class="line"><span class="string">			&lt;/grid01&gt;</span></span><br><span class="line"><span class="string">		&lt;/div&gt;</span></span><br><span class="line"><span class="string">	`</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre><code>1.&lt;p&gt;大海&lt;/p&gt;会渲染到组件 grid01 中的slot插槽里面
+2.插槽的位置改变，即渲染的内容位置改变</code></pre>
+<h2 id="进阶用法">进阶用法</h2>
+<pre><code>1.组件的插槽个数没有限制
+2.可以通过name属性给 slot 设置名字
+3.组件可以设置一个不带名字的 slot 作为默认插槽
+4.可以在 slot 的标签中给 slot 设置默认内容，当没有内容插入时自动渲染
+5.插槽模板内容中使用的数据或方法属于哪个组件？
+    这个插槽模板写在哪，就属于哪。
+6.有时候插槽模板需要使用来自组件本身的数据
+    6.1 给插槽加一些属性，除name之外
+        &lt;slot abc=&quot;哈哈&quot; kl=&quot;最好&quot;&gt;&lt;/slot&gt;
+    6.2 在插槽模板内容的标签上，定义 slot-scope=&quot;obj&quot;
+    6.3 obj是一个对象&#123; abc:&quot;哈哈&quot;, kl: &quot;最好&quot;&#125;，此时可使用obj.abc来使用参数</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;grid01&quot;</span>,&#123;</span><br><span class="line">   <span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">       <span class="attr">money</span>:<span class="number">56</span></span><br><span class="line">     &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="attr">template</span>:<span class="string">`</span></span><br><span class="line"><span class="string">     &lt;div&gt;</span></span><br><span class="line"><span class="string">       &lt;h1&gt;你好&lt;/h1&gt;</span></span><br><span class="line"><span class="string">       &lt;slot&gt;&lt;/slot&gt;</span></span><br><span class="line"><span class="string">       &lt;slot name=&quot;mid&quot; :count=&quot;money&quot;&gt;&lt;/slot&gt;</span></span><br><span class="line"><span class="string">       &lt;slot name=&quot;bottom&quot;&gt;&lt;/slot&gt;</span></span><br><span class="line"><span class="string">     &lt;/div&gt;</span></span><br><span class="line"><span class="string">   `</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"> <span class="keyword">let</span> vm = <span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">   <span class="attr">el</span>: <span class="string">&quot;#app&quot;</span>,</span><br><span class="line">   <span class="attr">data</span>: &#123;&#125;,</span><br><span class="line">   <span class="attr">template</span>:<span class="string">`</span></span><br><span class="line"><span class="string">     &lt;div id=&quot;app&quot;&gt;</span></span><br><span class="line"><span class="string">       &lt;grid01&gt;</span></span><br><span class="line"><span class="string">         &lt;p slot=&quot;mid&quot;&gt;大海&lt;/p&gt;</span></span><br><span class="line"><span class="string">         &lt;p slot=&quot;top&quot;&gt;蓝天&lt;/p&gt;</span></span><br><span class="line"><span class="string">         &lt;p&gt;插入默认插槽&lt;/p&gt;</span></span><br><span class="line"><span class="string">         &lt;p&gt;也会插入默认插槽&lt;/p&gt;</span></span><br><span class="line"><span class="string">       &lt;/grid01&gt;</span></span><br><span class="line"><span class="string">     &lt;/div&gt;</span></span><br><span class="line"><span class="string">   `</span></span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
+<p>Vue2.6中指定插槽使用v-slot这样写: <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> vm = <span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">  <span class="attr">el</span>: <span class="string">&quot;#app&quot;</span>,</span><br><span class="line">  <span class="attr">data</span>: &#123;&#125;,</span><br><span class="line">  <span class="attr">template</span>:<span class="string">`</span></span><br><span class="line"><span class="string">    &lt;div id=&quot;app&quot;&gt;</span></span><br><span class="line"><span class="string">      &lt;grid01&gt;</span></span><br><span class="line"><span class="string">      &lt;template v-slot:top=&quot;obj&quot;&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;大海,&#123;&#123; obj.money &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">      &lt;/template&gt;</span></span><br><span class="line"><span class="string">      &lt;/grid01&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure> ​ 注意：</p>
+<ol type="1">
+<li><p>v-slot 必须在一个 template 标签中使用</p></li>
+<li><p>v-slot:top表示指定插槽为top</p></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="zhunh 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+              <a href="/tags/Vue-js/" rel="tag"># Vue.js</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/12/2020-02-12-Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0/" rel="prev" title="Vue生命周期钩子函数">
+                  <i class="fa fa-chevron-left"></i> Vue生命周期钩子函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/12/2020-02-12-Vue%E7%BC%96%E7%A8%8B%E5%BC%8F%E5%AF%BC%E8%88%AA/" rel="next" title="Vue编程式导航">
+                  Vue编程式导航 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhunh</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">79k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:12</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

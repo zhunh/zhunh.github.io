@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Vuex使用  什么时候需要使用vuex？ 1.当项目使用了vue-router，并且多个页面之间需要共享数据的时候。 2.共享数据难以统一管理的时候。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vuex使用">
+<meta property="og:url" content="http://example.com/2020/02/12/2020-02-12-vuex%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="code-learing">
+<meta property="og:description" content="Vuex使用  什么时候需要使用vuex？ 1.当项目使用了vue-router，并且多个页面之间需要共享数据的时候。 2.共享数据难以统一管理的时候。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-26T14:59:50.777Z">
+<meta property="article:author" content="zhunh">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Vue.js">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/02/12/2020-02-12-vuex%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/02/12/2020-02-12-vuex%E4%BD%BF%E7%94%A8/","path":"2020/02/12/2020-02-12-vuex使用/","title":"Vuex使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vuex使用 | code-learing</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">code-learing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hi there, my friend</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vuex%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Vuex使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85vuex"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装vuex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8src%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA-storeindex.js-%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE%E4%BB%93%E5%BA%93%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.</span> <span class="nav-text">2.在src目录下创建一个
+store&#x2F;index.js 文件，配置仓库的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8vue-%E5%AE%9E%E4%BE%8B%E4%B8%AD%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">3.在Vue 实例中配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E7%BB%84%E4%BB%B6%E4%B8%AD%E4%BD%BF%E7%94%A8%E4%BB%93%E5%BA%93%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.4.</span> <span class="nav-text">4.在组件中使用仓库的数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-mapstate-%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0%E6%97%B6%E5%A6%82%E6%9E%9C%E7%BB%84%E4%BB%B6%E9%9C%80%E8%A6%81%E5%AE%9A%E4%B9%89%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8...%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.2使用
+mapState
+辅助函数时，如果组件需要定义自己的计算属性，可以使用...运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E4%BB%93%E5%BA%93%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.5.</span> <span class="nav-text">5.修改仓库中的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%9C%B0%E4%BF%AE%E6%94%B9%E4%BB%93%E5%BA%93%E4%B8%AD%E7%9A%84-state-%E6%95%B0%E6%8D%AE%E5%A6%82-ajaxsettimeout"><span class="nav-number">1.6.</span> <span class="nav-text">7.异步地修改仓库中的
+state 数据，如 ajax、setTimeout</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E7%BB%84%E4%BB%B6%E4%B8%AD%E5%BC%82%E6%AD%A5%E5%AE%8C%E6%88%90%E4%B9%8B%E5%90%8E%E5%86%8D-commit-mutations"><span class="nav-number">1.6.1.</span> <span class="nav-text">7.1在组件中，异步完成之后，再
+commit mutations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8actions"><span class="nav-number">1.6.2.</span> <span class="nav-text">7.2使用actions</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#modules%E9%80%89%E9%A1%B9"><span class="nav-number">1.7.</span> <span class="nav-text">8.modules选项</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E4%B8%BB%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="nav-number">1.7.1.</span> <span class="nav-text">8.2在主模块配置子模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E7%BB%84%E4%BB%B6%E4%B8%AD%E8%B0%83%E7%94%A8"><span class="nav-number">1.7.2.</span> <span class="nav-text">8.3在组件中调用</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhunh"
+      src="/images/lcf.jpeg">
+  <p class="site-author-name" itemprop="name">zhunh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhunh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhunh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/12/2020-02-12-vuex%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/lcf.jpeg">
+      <meta itemprop="name" content="zhunh">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code-learing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vuex使用 | code-learing">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vuex使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00+08:00">2020-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-26 22:59:50" itemprop="dateModified" datetime="2022-08-26T22:59:50+08:00">2022-08-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="vuex使用">Vuex使用</h2>
+<blockquote>
+<p>什么时候需要使用vuex？
+1.当项目使用了vue-router，并且多个页面之间需要共享数据的时候。
+2.共享数据难以统一管理的时候。</p>
+</blockquote>
+<span id="more"></span>
+<h3 id="安装vuex">1.安装vuex</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save vuex</span><br></pre></td></tr></table></figure>
+<h3
+id="在src目录下创建一个-storeindex.js-文件配置仓库的数据">2.在src目录下创建一个
+store/index.js 文件，配置仓库的数据</h3>
+<blockquote>
+<p>思考项目中哪些数据要放在仓库 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.引入 vue</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"><span class="comment">// 2.引入vuex</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&quot;vuex&quot;</span></span><br><span class="line"><span class="comment">// 3.调用 vuex</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>);</span><br><span class="line"><span class="comment">// 4.定义仓库的 state、getters、mutations、actions、modules</span></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">    <span class="attr">name</span>:<span class="string">&quot;泰勒斯威夫特&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 5.实例化仓库对象</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">    <span class="comment">// 选项配置：state、getters、mutations、actions、modules</span></span><br><span class="line">    <span class="attr">state</span>:state,</span><br><span class="line">    getters</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 6.暴露仓库实例对象</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="在vue-实例中配置">3.在Vue 实例中配置</h3>
+<blockquote>
+<p>在 main.js 中，即 new Vue 的时候配置 store 这个选项，选项的值就是
+store 的实例对象 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">  <span class="attr">store</span>:store,</span><br><span class="line">  router,</span><br><span class="line">  <span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> <span class="title function_">h</span>(<span class="title class_">App</span>),</span><br><span class="line">&#125;).$mount(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="在组件中使用仓库的数据">4.在组件中使用仓库的数据</h3>
+<p>####4.1使用 mapState() 这个辅助函数 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;h1&gt;仓库中 name 为：&#123;&#123; name &#125;&#125;&lt;/h1&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure> <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mapState &#125; <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">// 定义计算属性</span></span><br><span class="line">  <span class="attr">computed</span>: <span class="title function_">mapState</span>([<span class="string">&quot;name&quot;</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4
+id="使用-mapstate-辅助函数时如果组件需要定义自己的计算属性可以使用...运算符">4.2使用
+mapState
+辅助函数时，如果组件需要定义自己的计算属性，可以使用...运算符</h4>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">// 定义计算属性</span></span><br><span class="line">  <span class="attr">computed</span>: &#123;</span><br><span class="line">  	...<span class="title function_">mapState</span>([<span class="string">&quot;name&quot;</span>]),</span><br><span class="line">  	<span class="attr">list01</span>: <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">  		<span class="keyword">return</span> [<span class="string">&quot;sd&quot;</span>,<span class="string">&quot;df&quot;</span>]</span><br><span class="line">  	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="修改仓库中的数据">5.修改仓库中的数据</h3>
+<p>1.首先在仓库的 mutations 部分定义一个修改 state 数据的方法
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">    <span class="comment">// 除了接收到state，还能接受一个 payload（参数）</span></span><br><span class="line">    <span class="title function_">setName</span>(<span class="params">state,payload</span>)&#123;</span><br><span class="line">        state.<span class="property">name</span> = payload.<span class="property">newName</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.组件中在methods中使用 mapMutations 这个辅助函数 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">methods</span>:&#123;</span><br><span class="line">  ...<span class="title function_">mapMutations</span>([<span class="string">&quot;setName&quot;</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述写法展开为： <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">methods</span>:&#123;</span><br><span class="line">  <span class="title function_">setName</span>(<span class="params">payload</span>)&#123;</span><br><span class="line">  	<span class="comment">//commit 方法用来提交 mutation 的</span></span><br><span class="line">  	<span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">&#x27;setName&#x27;</span>,payload);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> ### 6.获取仓库中 getters 的数据 使用
+mapGetters 这个辅助函数即可。</p>
+<h3
+id="异步地修改仓库中的-state-数据如-ajaxsettimeout">7.异步地修改仓库中的
+state 数据，如 ajax、setTimeout</h3>
+<h4
+id="在组件中异步完成之后再-commit-mutations">7.1在组件中，异步完成之后，再
+commit mutations</h4>
+<h4 id="使用actions">7.2使用actions</h4>
+<h3 id="modules选项">8.modules选项</h3>
+<blockquote>
+<p>将仓库中 state 的数据，按照某种格式来做拆分，拆分成一个个小的module
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> moduleA = &#123;</span><br><span class="line">  <span class="attr">state</span>: &#123; ... &#125;,</span><br><span class="line">  <span class="attr">mutations</span>: &#123; ... &#125;,</span><br><span class="line">  <span class="attr">actions</span>: &#123; ... &#125;,</span><br><span class="line">  <span class="attr">getters</span>: &#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> moduleB = &#123;</span><br><span class="line">  <span class="attr">state</span>: &#123; ... &#125;,</span><br><span class="line">  <span class="attr">mutations</span>: &#123; ... &#125;,</span><br><span class="line">  <span class="attr">actions</span>: &#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="attr">modules</span>: &#123;</span><br><span class="line">    <span class="attr">a</span>: moduleA,</span><br><span class="line">    <span class="attr">b</span>: moduleB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">store.<span class="property">state</span>.<span class="property">a</span> <span class="comment">// -&gt; moduleA 的状态</span></span><br><span class="line">store.<span class="property">state</span>.<span class="property">b</span> <span class="comment">// -&gt; moduleB 的状态</span></span><br></pre></td></tr></table></figure> #### 8.1子模块
+子模块写法：暴露一个对象（包含state、mutations、getters、actions、modules等），可以继续嵌套子模块。子模块建议设置命名空间，否则子模块除
+state 外其他全部会挂载到全局命名空间下。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 子模块 cart.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span>&#123;</span><br><span class="line">	<span class="attr">namespaced</span>: <span class="literal">true</span>, <span class="comment">//注意设置命名空间</span></span><br><span class="line">	<span class="attr">state</span>:&#123;</span><br><span class="line">		<span class="attr">carts</span>:[]</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">getters</span>:&#123;&#125;,</span><br><span class="line">	<span class="attr">mutations</span>:&#123;</span><br><span class="line">		<span class="title function_">add</span>(<span class="params"></span>)&#123;	<span class="comment">// 定义</span></span><br><span class="line">			<span class="comment">//...</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">actions</span>:&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="在主模块配置子模块">8.2在主模块配置子模块</h4>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&quot;vuex&quot;</span></span><br><span class="line"><span class="comment">// 引入拆分出去的仓库小模块</span></span><br><span class="line"><span class="keyword">import</span> cart <span class="keyword">from</span> <span class="string">&quot;./modules/cart&quot;</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br><span class="line"><span class="comment">// 实例化仓库的实例对象</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">	<span class="attr">modules</span>:&#123;</span><br><span class="line">		cart</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="在组件中调用">8.3在组件中调用</h4>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mapMutations &#125; <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">	<span class="attr">computed</span>:&#123;&#125;,</span><br><span class="line">	<span class="attr">methods</span>:&#123;</span><br><span class="line">		<span class="comment">//...mapMutations(&quot;cart&quot;,[&quot;add&quot;]) // 调用，cart为命名空间</span></span><br><span class="line">		<span class="comment">// 展开写法如下</span></span><br><span class="line">		<span class="title function_">fn1</span>(<span class="params"></span>)&#123;</span><br><span class="line">			<span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">&quot;cart/adds&quot;</span>) <span class="comment">//注意这种写法，但推荐上述写法</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+        <div class="popular-posts-date">2019-10-17</div>
+      <div class="popular-posts-title"><a href="2019/10/17/2019-10-17-Vue组件之间的通讯方式/" rel="bookmark">vue中组件之间的通讯方式</a></div>
+    </li>
+    <li class="popular-posts-item">
+        <div class="popular-posts-date">2020-02-12</div>
+      <div class="popular-posts-title"><a href="2020/02/12/2020-02-12-Vue编程式导航/" rel="bookmark">Vue编程式导航</a></div>
+        <div class="popular-posts-excerpt"><p><blockquote>
+<p>通过 js 代码的方式来控制页面的跳转。 在 Vue 实例内部，你可以通过
+$router 访问路由实例。this.$router.push()</p>
+</blockquote></p></div>
+    </li>
+    <li class="popular-posts-item">
+        <div class="popular-posts-date">2020-02-12</div>
+      <div class="popular-posts-title"><a href="2020/02/12/2020-02-12-ES数组常用方法总结/" rel="bookmark">ES数组常用方法总结</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="zhunh 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+              <a href="/tags/Vue-js/" rel="tag"># Vue.js</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/12/centos7%20nginx%20%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/12/2020-02-12-Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0/" rel="next" title="Vue生命周期钩子函数">
+                  Vue生命周期钩子函数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhunh</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">79k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:12</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

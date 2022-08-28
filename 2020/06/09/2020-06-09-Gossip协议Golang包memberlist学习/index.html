@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="memberlist是一个Go库，它使用基于Gossip的协议管理集群成员和成员故障检测。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gossip协议Golang包memberlist学习">
+<meta property="og:url" content="http://example.com/2020/06/09/2020-06-09-Gossip%E5%8D%8F%E8%AE%AEGolang%E5%8C%85memberlist%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="code-learing">
+<meta property="og:description" content="memberlist是一个Go库，它使用基于Gossip的协议管理集群成员和成员故障检测。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-09T02:32:58.000Z">
+<meta property="article:modified_time" content="2022-08-26T15:00:16.625Z">
+<meta property="article:author" content="zhunh">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/06/09/2020-06-09-Gossip%E5%8D%8F%E8%AE%AEGolang%E5%8C%85memberlist%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/06/09/2020-06-09-Gossip%E5%8D%8F%E8%AE%AEGolang%E5%8C%85memberlist%E5%AD%A6%E4%B9%A0/","path":"2020/06/09/2020-06-09-Gossip协议Golang包memberlist学习/","title":"Gossip协议Golang包memberlist学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Gossip协议Golang包memberlist学习 | code-learing</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">code-learing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hi there, my friend</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhunh"
+      src="/images/lcf.jpeg">
+  <p class="site-author-name" itemprop="name">zhunh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhunh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhunh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/09/2020-06-09-Gossip%E5%8D%8F%E8%AE%AEGolang%E5%8C%85memberlist%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/lcf.jpeg">
+      <meta itemprop="name" content="zhunh">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code-learing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Gossip协议Golang包memberlist学习 | code-learing">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gossip协议Golang包memberlist学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-06-09 10:32:58" itemprop="dateCreated datePublished" datetime="2020-06-09T10:32:58+08:00">2020-06-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-26 23:00:16" itemprop="dateModified" datetime="2022-08-26T23:00:16+08:00">2022-08-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>memberlist是一个Go库，它使用基于Gossip的协议管理集群成员和成员故障检测。</p>
+</blockquote>
+<span id="more"></span>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="298" height="52" src="//music.163.com/outchain/player?type=2&amp;id=34218938&amp;auto=1&amp;height=32">
+</iframe>
+<p>Config 配置文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Config <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 节点名称，在集群中必须唯一</span></span><br><span class="line">    Name <span class="type">string</span></span><br><span class="line">    <span class="comment">// Transport提供节点间通讯的基础服务，tcp、udp等</span></span><br><span class="line">    Transport Transport</span><br><span class="line">    <span class="comment">// gossip peer绑定的地址，新节点可以通过任意一个节点的BindAddr</span></span><br><span class="line">  	<span class="comment">// 默认&quot;0.0.0.0&quot;、&quot;7946&quot;</span></span><br><span class="line">    BindAddr <span class="type">string</span></span><br><span class="line">    BindPort <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这对ip、port是集群其他节点与自己通讯用的, 也就是外部可以访问到的ip和端口</span></span><br><span class="line">    <span class="comment">// cluster members. Used for nat traversal.</span></span><br><span class="line">    AdvertiseAddr <span class="type">string</span></span><br><span class="line">    AdvertisePort <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// ProtocolVersion is the configured protocol version that we</span></span><br><span class="line">    <span class="comment">// will _speak_. This must be between ProtocolVersionMin and</span></span><br><span class="line">    <span class="comment">// ProtocolVersionMax.</span></span><br><span class="line">    ProtocolVersion <span class="type">uint8</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// TCPTimeout is the timeout for establishing a stream connection with</span></span><br><span class="line">    <span class="comment">// a remote node for a full state sync, and for stream read and write</span></span><br><span class="line">    <span class="comment">// operations. This is a legacy name for backwards compatibility, but</span></span><br><span class="line">    <span class="comment">// should really be called StreamTimeout now that we have generalized</span></span><br><span class="line">    <span class="comment">// the transport.</span></span><br><span class="line">    TCPTimeout time.Duration</span><br><span class="line"></span><br><span class="line">    <span class="comment">// IndirectChecks is the number of nodes that will be asked to perform</span></span><br><span class="line">    <span class="comment">// an indirect probe of a node in the case a direct probe fails. Memberlist</span></span><br><span class="line">    <span class="comment">// waits for an ack from any single indirect node, so increasing this</span></span><br><span class="line">    <span class="comment">// number will increase the likelihood that an indirect probe will succeed</span></span><br><span class="line">    <span class="comment">// at the expense of bandwidth.</span></span><br><span class="line">    IndirectChecks <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// RetransmitMult is the multiplier for the number of retransmissions</span></span><br><span class="line">    <span class="comment">// that are attempted for messages broadcasted over gossip. The actual</span></span><br><span class="line">    <span class="comment">// count of retransmissions is calculated using the formula:</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">//   Retransmits = RetransmitMult * log(N+1)</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// This allows the retransmits to scale properly with cluster size. The</span></span><br><span class="line">    <span class="comment">// higher the multiplier, the more likely a failed broadcast is to converge</span></span><br><span class="line">    <span class="comment">// at the expense of increased bandwidth.</span></span><br><span class="line">    RetransmitMult <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// SuspicionMult is the multiplier for determining the time an</span></span><br><span class="line">    <span class="comment">// inaccessible node is considered suspect before declaring it dead.</span></span><br><span class="line">    <span class="comment">// The actual timeout is calculated using the formula:</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">//   SuspicionTimeout = SuspicionMult * log(N+1) * ProbeInterval</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// This allows the timeout to scale properly with expected propagation</span></span><br><span class="line">    <span class="comment">// delay with a larger cluster size. The higher the multiplier, the longer</span></span><br><span class="line">    <span class="comment">// an inaccessible node is considered part of the cluster before declaring</span></span><br><span class="line">    <span class="comment">// it dead, giving that suspect node more time to refute if it is indeed</span></span><br><span class="line">    <span class="comment">// still alive.</span></span><br><span class="line">    SuspicionMult <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// SuspicionMaxTimeoutMult is the multiplier applied to the</span></span><br><span class="line">    <span class="comment">// SuspicionTimeout used as an upper bound on detection time. This max</span></span><br><span class="line">    <span class="comment">// timeout is calculated using the formula:</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// SuspicionMaxTimeout = SuspicionMaxTimeoutMult * SuspicionTimeout</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// If everything is working properly, confirmations from other nodes will</span></span><br><span class="line">    <span class="comment">// accelerate suspicion timers in a manner which will cause the timeout</span></span><br><span class="line">    <span class="comment">// to reach the base SuspicionTimeout before that elapses, so this value</span></span><br><span class="line">    <span class="comment">// will typically only come into play if a node is experiencing issues</span></span><br><span class="line">    <span class="comment">// communicating with other nodes. It should be set to a something fairly</span></span><br><span class="line">    <span class="comment">// large so that a node having problems will have a lot of chances to</span></span><br><span class="line">    <span class="comment">// recover before falsely declaring other nodes as failed, but short</span></span><br><span class="line">    <span class="comment">// enough for a legitimately isolated node to still make progress marking</span></span><br><span class="line">    <span class="comment">// nodes failed in a reasonable amount of time.</span></span><br><span class="line">    SuspicionMaxTimeoutMult <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// PushPullInterval is the interval between complete state syncs.</span></span><br><span class="line">    <span class="comment">// Complete state syncs are done with a single node over TCP and are</span></span><br><span class="line">    <span class="comment">// quite expensive relative to standard gossiped messages. Setting this</span></span><br><span class="line">    <span class="comment">// to zero will disable state push/pull syncs completely.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Setting this interval lower (more frequent) will increase convergence</span></span><br><span class="line">    <span class="comment">// speeds across larger clusters at the expense of increased bandwidth</span></span><br><span class="line">    <span class="comment">// usage.</span></span><br><span class="line">    PushPullInterval time.Duration</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ProbeInterval and ProbeTimeout are used to configure probing</span></span><br><span class="line">    <span class="comment">// behavior for memberlist.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// ProbeInterval is the interval between random node probes. Setting</span></span><br><span class="line">    <span class="comment">// this lower (more frequent) will cause the memberlist cluster to detect</span></span><br><span class="line">    <span class="comment">// failed nodes more quickly at the expense of increased bandwidth usage.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// ProbeTimeout is the timeout to wait for an ack from a probed node</span></span><br><span class="line">    <span class="comment">// before assuming it is unhealthy. This should be set to 99-percentile</span></span><br><span class="line">    <span class="comment">// of RTT (round-trip time) on your network.</span></span><br><span class="line">    ProbeInterval time.Duration</span><br><span class="line">    ProbeTimeout  time.Duration</span><br><span class="line"></span><br><span class="line">    <span class="comment">// DisableTcpPings will turn off the fallback TCP pings that are attempted</span></span><br><span class="line">    <span class="comment">// if the direct UDP ping fails. These get pipelined along with the</span></span><br><span class="line">    <span class="comment">// indirect UDP pings.</span></span><br><span class="line">    DisableTcpPings <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// DisableTcpPingsForNode is like DisableTcpPings, but lets you control</span></span><br><span class="line">    <span class="comment">// whether to perform TCP pings on a node-by-node basis.</span></span><br><span class="line">    DisableTcpPingsForNode <span class="function"><span class="keyword">func</span><span class="params">(nodeName <span class="type">string</span>)</span></span> <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// AwarenessMaxMultiplier will increase the probe interval if the node</span></span><br><span class="line">    <span class="comment">// becomes aware that it might be degraded and not meeting the soft real</span></span><br><span class="line">    <span class="comment">// time requirements to reliably probe other nodes.</span></span><br><span class="line">    AwarenessMaxMultiplier <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// GossipInterval and GossipNodes are used to configure the gossip</span></span><br><span class="line">    <span class="comment">// behavior of memberlist.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// GossipInterval is the interval between sending messages that need</span></span><br><span class="line">    <span class="comment">// to be gossiped that haven&#x27;t been able to piggyback on probing messages.</span></span><br><span class="line">    <span class="comment">// If this is set to zero, non-piggyback gossip is disabled. By lowering</span></span><br><span class="line">    <span class="comment">// this value (more frequent) gossip messages are propagated across</span></span><br><span class="line">    <span class="comment">// the cluster more quickly at the expense of increased bandwidth.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// GossipNodes is the number of random nodes to send gossip messages to</span></span><br><span class="line">    <span class="comment">// per GossipInterval. Increasing this number causes the gossip messages</span></span><br><span class="line">    <span class="comment">// to propagate across the cluster more quickly at the expense of</span></span><br><span class="line">    <span class="comment">// increased bandwidth.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// GossipToTheDeadTime is the interval after which a node has died that</span></span><br><span class="line">    <span class="comment">// we will still try to gossip to it. This gives it a chance to refute.</span></span><br><span class="line">    GossipInterval      time.Duration</span><br><span class="line">    GossipNodes         <span class="type">int</span></span><br><span class="line">    GossipToTheDeadTime time.Duration</span><br><span class="line"></span><br><span class="line">    <span class="comment">// GossipVerifyIncoming controls whether to enforce encryption for incoming</span></span><br><span class="line">    <span class="comment">// gossip. It is used for upshifting from unencrypted to encrypted gossip on</span></span><br><span class="line">    <span class="comment">// a running cluster.</span></span><br><span class="line">    GossipVerifyIncoming <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// GossipVerifyOutgoing controls whether to enforce encryption for outgoing</span></span><br><span class="line">    <span class="comment">// gossip. It is used for upshifting from unencrypted to encrypted gossip on</span></span><br><span class="line">    <span class="comment">// a running cluster.</span></span><br><span class="line">    GossipVerifyOutgoing <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// EnableCompression is used to control message compression. This can</span></span><br><span class="line">    <span class="comment">// be used to reduce bandwidth usage at the cost of slightly more CPU</span></span><br><span class="line">    <span class="comment">// utilization. This is only available starting at protocol version 1.</span></span><br><span class="line">    EnableCompression <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// SecretKey is used to initialize the primary encryption key in a keyring.</span></span><br><span class="line">    <span class="comment">// The primary encryption key is the only key used to encrypt messages and</span></span><br><span class="line">    <span class="comment">// the first key used while attempting to decrypt messages. Providing a</span></span><br><span class="line">    <span class="comment">// value for this primary key will enable message-level encryption and</span></span><br><span class="line">    <span class="comment">// verification, and automatically install the key onto the keyring.</span></span><br><span class="line">    <span class="comment">// The value should be either 16, 24, or 32 bytes to select AES-128,</span></span><br><span class="line">    <span class="comment">// AES-192, or AES-256.</span></span><br><span class="line">    SecretKey []<span class="type">byte</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// The keyring holds all of the encryption keys used internally. It is</span></span><br><span class="line">    <span class="comment">// automatically initialized using the SecretKey and SecretKeys values.</span></span><br><span class="line">    Keyring *Keyring</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Delegate and Events are delegates for receiving and providing</span></span><br><span class="line">    <span class="comment">// data to memberlist via callback mechanisms. For Delegate, see</span></span><br><span class="line">    <span class="comment">// the Delegate interface. For Events, see the EventDelegate interface.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// The DelegateProtocolMin/Max are used to guarantee protocol-compatibility</span></span><br><span class="line">    <span class="comment">// for any custom messages that the delegate might do (broadcasts,</span></span><br><span class="line">    <span class="comment">// local/remote state, etc.). If you don&#x27;t set these, then the protocol</span></span><br><span class="line">    <span class="comment">// versions will just be zero, and version compliance won&#x27;t be done.</span></span><br><span class="line">    Delegate                Delegate</span><br><span class="line">    DelegateProtocolVersion <span class="type">uint8</span></span><br><span class="line">    DelegateProtocolMin     <span class="type">uint8</span></span><br><span class="line">    DelegateProtocolMax     <span class="type">uint8</span></span><br><span class="line">    Events                  EventDelegate</span><br><span class="line">    Conflict                ConflictDelegate</span><br><span class="line">    Merge                   MergeDelegate</span><br><span class="line">    Ping                    PingDelegate</span><br><span class="line">    Alive                   AliveDelegate</span><br><span class="line"></span><br><span class="line">    <span class="comment">// DNSConfigPath points to the system&#x27;s DNS config file, usually located</span></span><br><span class="line">    <span class="comment">// at /etc/resolv.conf. It can be overridden via config for easier testing.</span></span><br><span class="line">    DNSConfigPath <span class="type">string</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// LogOutput is the writer where logs should be sent. If this is not</span></span><br><span class="line">    <span class="comment">// set, logging will go to stderr by default. You cannot specify both LogOutput</span></span><br><span class="line">    <span class="comment">// and Logger at the same time.</span></span><br><span class="line">    LogOutput io.Writer</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Logger is a custom logger which you provide. If Logger is set, it will use</span></span><br><span class="line">    <span class="comment">// this for the internal logger. If Logger is not set, it will fall back to the</span></span><br><span class="line">    <span class="comment">// behavior for using LogOutput. You cannot specify both LogOutput and Logger</span></span><br><span class="line">    <span class="comment">// at the same time.</span></span><br><span class="line">    Logger *log.Logger</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Size of Memberlist&#x27;s internal channel which handles UDP messages. The</span></span><br><span class="line">    <span class="comment">// size of this determines the size of the queue which Memberlist will keep</span></span><br><span class="line">    <span class="comment">// while UDP messages are handled.</span></span><br><span class="line">    HandoffQueueDepth <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Maximum number of bytes that memberlist will put in a packet (this</span></span><br><span class="line">    <span class="comment">// will be for UDP packets by default with a NetTransport). A safe value</span></span><br><span class="line">    <span class="comment">// for this is typically 1400 bytes (which is the default). However,</span></span><br><span class="line">    <span class="comment">// depending on your network&#x27;s MTU (Maximum Transmission Unit) you may</span></span><br><span class="line">    <span class="comment">// be able to increase this to get more content into each gossip packet.</span></span><br><span class="line">    <span class="comment">// This is a legacy name for backward compatibility but should really be</span></span><br><span class="line">    <span class="comment">// called PacketBufferSize now that we have generalized the transport.</span></span><br><span class="line">    UDPBufferSize <span class="type">int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// DeadNodeReclaimTime controls the time before a dead node&#x27;s name can be</span></span><br><span class="line">    <span class="comment">// reclaimed by one with a different address or port. By default, this is 0,</span></span><br><span class="line">    <span class="comment">// meaning nodes cannot be reclaimed this way.</span></span><br><span class="line">    DeadNodeReclaimTime time.Duration</span><br><span class="line"></span><br><span class="line">    <span class="comment">// RequireNodeNames controls if the name of a node is required when sending</span></span><br><span class="line">    <span class="comment">// a message to that node.</span></span><br><span class="line">    RequireNodeNames <span class="type">bool</span></span><br><span class="line">    <span class="comment">// CIDRsAllowed If nil, allow any connection (default), otherwise specify all networks</span></span><br><span class="line">    <span class="comment">// allowed to connect (you must specify IPv6/IPv4 separately)</span></span><br><span class="line">    <span class="comment">// Using [] will block all connections.</span></span><br><span class="line">    CIDRsAllowed []net.IPNet</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="zhunh 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/06/2020-06-06-%E5%A4%9A%E5%85%83%E5%88%86%E7%B1%BB%E5%99%A8/" rel="prev" title="多元分类器">
+                  <i class="fa fa-chevron-left"></i> 多元分类器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/06/12/2020-06-12-AI%E7%AC%94%E8%AE%B0/" rel="next" title="AI笔记">
+                  AI笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhunh</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">79k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:12</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

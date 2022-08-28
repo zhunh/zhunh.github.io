@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1.数据类型 （1）七种基本数据类型 Boolean null 一个表明 null 值的特殊关键字 undefined 表示变量未定义时的属性 Number 整数或浮点数 BigInt 任意精度的整数，可以安全地存储和操作大整数 String Symbol 实例是唯一且不可改变的数据类型 （2）引用类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS笔记">
+<meta property="og:url" content="http://example.com/2020/09/09/2020-09-09-JS%E7%9F%A5%E8%AF%86%E6%A2%B3%E7%90%86/index.html">
+<meta property="og:site_name" content="code-learing">
+<meta property="og:description" content="1.数据类型 （1）七种基本数据类型 Boolean null 一个表明 null 值的特殊关键字 undefined 表示变量未定义时的属性 Number 整数或浮点数 BigInt 任意精度的整数，可以安全地存储和操作大整数 String Symbol 实例是唯一且不可改变的数据类型 （2）引用类型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/article/promises.png">
+<meta property="og:image" content="https://zhunh.github.io/pics/promiseStream.jpg">
+<meta property="article:published_time" content="2020-09-09T06:33:35.000Z">
+<meta property="article:modified_time" content="2022-08-28T02:05:57.475Z">
+<meta property="article:author" content="zhunh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/article/promises.png">
+
+
+<link rel="canonical" href="http://example.com/2020/09/09/2020-09-09-JS%E7%9F%A5%E8%AF%86%E6%A2%B3%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/09/09/2020-09-09-JS%E7%9F%A5%E8%AF%86%E6%A2%B3%E7%90%86/","path":"2020/09/09/2020-09-09-JS知识梳理/","title":"JS笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JS笔记 | code-learing</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">code-learing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hi there, my friend</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">1.数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%95%B0%E5%AD%97"><span class="nav-number">2.</span> <span class="nav-text">2.字符串转换为数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A2%AB%E8%AE%A1%E7%AE%97%E4%B8%BAfalse%E7%9A%84%E5%80%BC"><span class="nav-number">3.</span> <span class="nav-text">3.被计算为false的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#promise"><span class="nav-number">4.</span> <span class="nav-text">4.promise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE"><span class="nav-number">5.</span> <span class="nav-text">原型链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE"><span class="nav-number">6.</span> <span class="nav-text">5.函数作用域链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E4%B8%8E%E6%88%96%E7%90%86%E8%A7%A3"><span class="nav-number">7.</span> <span class="nav-text">6.逻辑与、或[理解]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-%E5%85%B3%E9%94%AE%E8%AF%8D%E4%BD%BF%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">7.in 关键词使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack%E6%89%93%E5%8C%85%E5%91%BD%E5%90%8D%E9%97%AE%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text">8.webpack打包命名问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this%E5%AF%B9%E8%B1%A1"><span class="nav-number">10.</span> <span class="nav-text">9.this对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#callapplybind"><span class="nav-number">11.</span> <span class="nav-text">10.call()、apply()、bind()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">12.</span> <span class="nav-text">11.new运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB"><span class="nav-number">13.</span> <span class="nav-text">12.类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bom%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">14.</span> <span class="nav-text">13.BOM浏览器对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E5%8F%98%E9%87%8F%E6%98%AF%E6%95%B0%E7%BB%84"><span class="nav-number">15.</span> <span class="nav-text">判断一个变量是数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96"><span class="nav-number">16.</span> <span class="nav-text">函数柯里化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#event-loop"><span class="nav-number">17.</span> <span class="nav-text">event loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E6%95%B0%E7%BB%84%E8%BD%AC%E6%95%B0%E7%BB%84"><span class="nav-number">18.</span> <span class="nav-text">类数组转数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E6%B5%81"><span class="nav-number">19.</span> <span class="nav-text">节流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E6%8A%96"><span class="nav-number">20.</span> <span class="nav-text">防抖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#virtual-dom%E8%99%9A%E6%8B%9Fdom%E7%AE%97%E6%B3%95"><span class="nav-number">21.</span> <span class="nav-text">Virtual DOM（虚拟DOM）算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#object.create%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">22.</span> <span class="nav-text">Object.create和new的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-number">23.</span> <span class="nav-text">字节面试题：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">24.</span> <span class="nav-text">事件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhunh"
+      src="/images/lcf.jpeg">
+  <p class="site-author-name" itemprop="name">zhunh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhunh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhunh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/09/2020-09-09-JS%E7%9F%A5%E8%AF%86%E6%A2%B3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/lcf.jpeg">
+      <meta itemprop="name" content="zhunh">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code-learing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JS笔记 | code-learing">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-09 14:33:35" itemprop="dateCreated datePublished" datetime="2020-09-09T14:33:35+08:00">2020-09-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-28 10:05:57" itemprop="dateModified" datetime="2022-08-28T10:05:57+08:00">2022-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="数据类型">1.数据类型</h2>
+<p>（1）七种基本数据类型 Boolean null 一个表明 null 值的特殊关键字
+undefined 表示变量未定义时的属性 Number 整数或浮点数 BigInt
+任意精度的整数，可以安全地存储和操作大整数 String Symbol
+实例是唯一且不可改变的数据类型</p>
+<p>（2）引用类型 <span id="more"></span> - 对象：Object、Array - 函数 -
+三种基本包装类型： String、Number、Boolean</p>
+<h2 id="字符串转换为数字">2.字符串转换为数字</h2>
+<p>（1）parseInt(x,10)，parseFloat() <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; parseInt(&quot;101&quot;,2)</span><br><span class="line">&gt; 5</span><br></pre></td></tr></table></figure> （2）一元加法运算符
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;1.1&quot; + &quot;1.1&quot; = &quot;1.11.1&quot;</span><br><span class="line">(+&quot;1.1&quot;) + (+&quot;1.1&quot;) = 2.2   </span><br><span class="line">// 注意：加入括号为清楚起见，不是必需的。</span><br></pre></td></tr></table></figure></p>
+<h2 id="被计算为false的值">3.被计算为false的值</h2>
+<ul>
+<li>false</li>
+<li>undefined</li>
+<li>null</li>
+<li>0</li>
+<li>NaN</li>
+<li>空字符串("")</li>
+</ul>
+<h2 id="promise">4.promise</h2>
+<figure>
+<img src="/images/article/promises.png" alt="promise生命周期" />
+<figcaption aria-hidden="true">promise生命周期</figcaption>
+</figure>
+<h2 id="原型链">原型链</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title class_">Person</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">name</span> = <span class="string">&quot;Jhon&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> person = <span class="keyword">new</span> <span class="title class_">Person</span>()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Person的原型对象</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>)</span><br><span class="line"><span class="comment">//&#123;constructor: ƒ (),__proto__: Object&#125;</span></span><br></pre></td></tr></table></figure>
+<p>​
+可见Person的原型对象(Person.prototype)包含constructor(构造函数)和__proto__两个属性，其中constructor指向Person构造函数，__proto__指向Object对象。</p>
+<p>原型链指向如下图：</p>
+<figure>
+<img src="https://zhunh.github.io/pics/promiseStream.jpg"
+alt="原型链" />
+<figcaption aria-hidden="true">原型链</figcaption>
+</figure>
+<p>Person构造函数的原型(prototype)指向它的原型对象，即Person.prototype。这个原型对象的constructor属性指向(回)这个构造函数Person，另一个属性__proto__指向Object的原型对象Object.prototype。</p>
+<h2 id="函数作用域链">5.函数作用域链</h2>
+<h2 id="逻辑与或理解">6.逻辑与、或[理解]</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">&quot;Cat&quot;</span> &amp;&amp; <span class="string">&quot;Dog&quot;</span>; <span class="comment">//return Dog</span></span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&quot;Cat&quot;</span> || <span class="string">&quot;Dog&quot;</span>; <span class="comment">//return Cat</span></span><br></pre></td></tr></table></figure>
+<p>作为逻辑表达式进行求值是从左到右，它们是为可能的“短路”的出现而使用以下规则进行测试：
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">false</span> &amp;&amp; anything    <span class="comment">// 被短路求值为false</span></span><br><span class="line"><span class="literal">true</span> || anything       <span class="comment">// 被短路求值为true</span></span><br></pre></td></tr></table></figure>
+逻辑的规则，保证这些评估是总是正确的。请注意，上述表达式的anything部分不会被求值，所以这样做不会产生任何副作用。
+简化if <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> b;</span><br><span class="line"><span class="keyword">if</span>(a==<span class="number">1</span>)&#123;</span><br><span class="line">  b = a + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//上式可写为：</span></span><br><span class="line">a==<span class="number">1</span>&amp;&amp;(b = a + <span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b)</span><br></pre></td></tr></table></figure></p>
+<h2 id="in-关键词使用">7.in 关键词使用</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">使用格式 （变量 <span class="keyword">in</span> 对象）</span><br><span class="line">当对象是数组是，变量指的是数组索引</span><br><span class="line">当对象是对象时，变量指的是对象属性</span><br><span class="line"><span class="keyword">let</span> a = [<span class="string">&quot;er&quot;</span>,<span class="string">&quot;ygbn&quot;</span>,<span class="string">&quot;t&quot;</span>]</span><br><span class="line"><span class="keyword">if</span> (<span class="number">2</span> <span class="keyword">in</span> a)&#123;</span><br><span class="line">	<span class="comment">// </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b = &#123;<span class="attr">a</span>:<span class="number">34</span>,<span class="attr">b</span>:<span class="string">&quot;ui&quot;</span>&#125;</span><br><span class="line"><span class="keyword">if</span> (a <span class="keyword">in</span> b)&#123;</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="webpack打包命名问题">8.webpack打包命名问题</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">W/7r =&gt; js/W/7r  <span class="comment">//斜杠会被解析为子路径</span></span><br></pre></td></tr></table></figure>
+<p>所以在部署到容器的时候: COPY dist/js/* 这样就不会复制 W/7r
+到容器路径，导致错误 COPY dist/js/ 去掉* 包含 W/* 就没错了</p>
+<h2 id="this对象">9.this对象</h2>
+<blockquote>
+<p><a
+target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/this">MDN</a></p>
+<ul>
+<li><p>在标准函数中，this
+引用的是<strong>把函数当成方法调用的上下文对象</strong>，这时候通常称其为
+this 值(在 网页的全局上下文中调用函数时，this 指向 windows)</p></li>
+<li><p>在箭头函数中，this 引用的是定义箭头函数的上下文</p></li>
+</ul>
+</blockquote>
+<pre><code>当前执行上下文（global、function 或 eval）的一个属性，在非严格模式下，总是指向一个对象，在严格模式下可以是任意值。</code></pre>
+<p>（1）全局上下文</p>
+<p>无论是否在严格模式下，在全局执行环境中（在任何函数体外部）<code>this</code>
+都指向全局对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在浏览器中, window 对象同时也是全局对象：</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span> === <span class="variable language_">window</span>); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line">a = <span class="number">37</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">window</span>.<span class="property">a</span>); <span class="comment">// 37</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">b</span> = <span class="string">&quot;MDN&quot;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">window</span>.<span class="property">b</span>)  <span class="comment">// &quot;MDN&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b)         <span class="comment">// &quot;MDN&quot;</span></span><br></pre></td></tr></table></figure>
+<p>（2）函数上下文</p>
+<p>​ 在函数内部，<code>this</code>的值取决于函数被调用的方式。</p>
+<p>非严格模式下，且 <code>this</code> 的值不是由该调用设置的，所以
+<code>this</code> 的值默认指向全局对象，浏览器中就是 <a
+target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window"><code>window</code></a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f1</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//在浏览器中：</span></span><br><span class="line"><span class="title function_">f1</span>() === <span class="variable language_">window</span>;   <span class="comment">//在浏览器中，全局对象是window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//在Node中：</span></span><br><span class="line"><span class="title function_">f1</span>() === globalThis;  </span><br></pre></td></tr></table></figure>
+<p>​ 严格模式下，如果进入执行环境时没有设置 <code>this</code>
+的值，<code>this</code> 会保持为 <code>undefined</code>，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f2</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="string">&quot;use strict&quot;</span>; <span class="comment">// 这里是严格模式</span></span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f2</span>() === <span class="literal">undefined</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>（3）类上下文
+this在类中的表现与函数类似，因为类本质上也是函数，但有一些区别和注意事项。
+在类的构造函数中，this是一个常规对象。类中所有非静态的方法都会被添加到this的原型中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Example</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> proto = <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(<span class="variable language_">this</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">getOwnPropertyNames</span>(proto));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">first</span>(<span class="params"></span>)&#123;&#125;</span><br><span class="line">  <span class="title function_">second</span>(<span class="params"></span>)&#123;&#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">third</span>(<span class="params"></span>)&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Example</span>(); <span class="comment">// [&#x27;constructor&#x27;, &#x27;first&#x27;, &#x27;second&#x27;]</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>静态方法不是 this
+的属性，它们只是类自身的属性。</p>
+<p>（4）派生类</p>
+<p>不像基类的构造函数，派生类的构造函数没有初始的 this
+绑定。在构造函数中调用 super() 会生成一个 this
+绑定，并相当于执行如下代码，Base为基类：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span> = <span class="keyword">new</span> <span class="title class_">Base</span>()</span><br></pre></td></tr></table></figure>
+<h2 id="callapplybind">10.call()、apply()、bind()</h2>
+<blockquote>
+<p>这三个函数都是用来改变某个函数运行时上下文，即改变函数内部 this
+的指向。</p>
+</blockquote>
+<p>（1）call、apply、bind用法之改变函数作用域[上下文]</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">22</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;橘子&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="variable language_">this</span>.<span class="property">age</span>,</span><br><span class="line">  <span class="attr">say</span>: <span class="keyword">function</span>(<span class="params">job, address</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">      <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> age is <span class="subst">$&#123;<span class="variable language_">this</span>.age&#125;</span>, job is <span class="subst">$&#123;job&#125;</span>, address is <span class="subst">$&#123;address&#125;</span>`</span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> x = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;天空&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="string">&quot;35&quot;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 正常调用</span></span><br><span class="line">obj.<span class="title function_">say</span>(); <span class="comment">//橘子:22</span></span><br><span class="line"><span class="comment">// call调用 注意参数</span></span><br><span class="line">obj.<span class="property">say</span>.<span class="title function_">call</span>(x, <span class="string">&quot;前端&quot;</span>, <span class="string">&quot;北京&quot;</span>);  <span class="comment">//天空 age is 35, job is 前端, address is 北京</span></span><br><span class="line"><span class="comment">// apply 注意参数是个数组</span></span><br><span class="line">obj.<span class="property">say</span>.<span class="title function_">apply</span>(x, [<span class="string">&quot;前端&quot;</span>, <span class="string">&quot;北京&quot;</span>]); <span class="comment">//天空 age is 35, job is 前端, address is 北京</span></span><br><span class="line"><span class="comment">// bind 注意bind 返回的是一个函数，需要手动调用</span></span><br><span class="line">obj.<span class="property">say</span>.<span class="title function_">bind</span>(x, <span class="string">&quot;前端&quot;</span>, <span class="string">&quot;北京&quot;</span>)(); <span class="comment">//天空 age is 35, job is 前端, address is 北京</span></span><br><span class="line">obj.<span class="property">say</span>.<span class="title function_">bind</span>(x,[<span class="string">&quot;前端&quot;</span>, <span class="string">&quot;北京&quot;</span>])(); <span class="comment">//天空 age is 35, job is 前端,北京, address is undefined</span></span><br></pre></td></tr></table></figure>
+<p>这三种调用"劫持"了 obj 的 say 方法，注意：</p>
+<ul>
+<li><p>call调用参数传递逗号分隔，第一个是上下文对象。</p></li>
+<li><p>apply调用参数传递是一个数组。</p></li>
+<li><p>bind调用返回的是一个函数。</p></li>
+</ul>
+<p>（2）call、apply、bind用法之实现继承[上下文]</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父类</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Animal</span>(<span class="params">name,size</span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">walk</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;name&#125;</span> is <span class="subst">$&#123;size&#125;</span>, but can walk.`</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 子类</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Cat</span>(<span class="params">name, size, color</span>)&#123;</span><br><span class="line">    <span class="comment">//这里以call为例，apply和bind同理</span></span><br><span class="line">    <span class="title class_">Animal</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>, name, size);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">color</span> = color;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> papy = <span class="keyword">new</span> <span class="title class_">Cat</span>(<span class="string">&quot;titi&quot;</span>, <span class="string">&quot;small&quot;</span>, <span class="string">&quot;pink&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(papy.<span class="title function_">walk</span>()) <span class="comment">//titi is small, but can walk.</span></span><br></pre></td></tr></table></figure>
+<p>（2）手写call方法 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//（3）手写call方法</span></span><br><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">mycall</span> = <span class="keyword">function</span>(<span class="params">context = <span class="variable language_">window</span></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> ctx = context || <span class="variable language_">window</span>;</span><br><span class="line">  ctx.<span class="property">fn</span> = <span class="variable language_">this</span>;</span><br><span class="line">  <span class="keyword">let</span> args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">let</span> res = ctx.<span class="title function_">fn</span>(...args);</span><br><span class="line">  <span class="keyword">delete</span> ctx.<span class="property">fn</span>;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;;</span><br><span class="line">obj.<span class="property">say</span>.<span class="title function_">mycall</span>(x, <span class="string">&quot;mycall&quot;</span>, <span class="string">&quot;北京&quot;</span>);<span class="comment">//天空 age is 35, job is mycall, address is 北京</span></span><br></pre></td></tr></table></figure></p>
+<p>(3)手写apply方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//（4）手写apply方法</span></span><br><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myapply</span> = <span class="keyword">function</span>(<span class="params">context = <span class="variable language_">window</span></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> ctx = context || <span class="variable language_">window</span>;</span><br><span class="line">  ctx.<span class="property">fn</span> = <span class="variable language_">this</span>;</span><br><span class="line">  <span class="keyword">let</span> args = <span class="variable language_">arguments</span>[<span class="number">1</span>] || [];</span><br><span class="line">  <span class="keyword">let</span> res = ctx.<span class="title function_">fn</span>(...args);</span><br><span class="line">  <span class="keyword">delete</span> ctx.<span class="property">fn</span>;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;;</span><br><span class="line">obj.<span class="property">say</span>.<span class="title function_">myapply</span>(x, [<span class="string">&quot;myapply&quot;</span>, <span class="string">&quot;北京&quot;</span>]);<span class="comment">//天空 age is 35, job is myapply, address is 北京</span></span><br></pre></td></tr></table></figure>
+<h2 id="new运算符">11.new运算符</h2>
+<blockquote>
+<p>https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new</p>
+</blockquote>
+<p><strong>语法</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> constructor[([<span class="variable language_">arguments</span>])]</span><br><span class="line">参数：</span><br><span class="line"><span class="attr">constructor</span>:一个指定对象实例的类型的类或函数</span><br><span class="line"><span class="attr">arguments</span>:一个用于被 constructor 调用的参数列表。</span><br></pre></td></tr></table></figure>
+<p><strong>描述</strong></p>
+<p>new 关键字会进行如下的操作：</p>
+<p>1.创建一个空的简单的JavaScript对象(即{})；</p>
+<p>2.链接该对象(设置该对象的constructor)到另一个对象；</p>
+<p>3.将步骤一新建的对象作为this的上下文；</p>
+<p>4.如果该函数没有返回对象，则返回this。</p>
+<p><strong>创建一个自定义对象需要两步：</strong></p>
+<p>1.通过编写函数定义对象类型</p>
+<p>2.通过new来创建对象实例</p>
+<p>当代码 <code>new Foo(...)</code> 执行时，会发生以下事情：</p>
+<ol type="1">
+<li>一个继承自 <code>Foo.prototype</code> 的新对象被创建。</li>
+<li>使用指定的参数调用构造函数 <em><code>Foo</code></em>，并将
+<code>this</code> 绑定到新创建的对象。<code>new Foo</code> 等同于
+<em><code>new Foo</code></em><code>()</code>，也就是没有指定参数列表，<em><code>Foo</code></em>
+不带任何参数调用的情况。</li>
+<li>由构造函数返回的对象就是 <code>new</code>
+表达式的结果。如果构造函数没有显式返回一个对象，则使用步骤1创建的对象。（一般情况下，构造函数不返回值，但是用户可以选择主动返回对象，来覆盖正常的对象创建步骤）</li>
+</ol>
+<h2 id="类">12.类</h2>
+<h2 id="bom浏览器对象模型">13.BOM浏览器对象模型</h2>
+<h2 id="判断一个变量是数组">判断一个变量是数组</h2>
+<p>（1）instanceof判断引用类型 &gt;
+判断某个构造函数的prototype属性所指向的对象是否存在于另外一个要检测对象的原型链上，
+&gt; &gt; 语法：object instanceof constructor</p>
+<p>eg: <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="keyword">const</span> b = &#123;&#125;;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a <span class="keyword">instanceof</span> <span class="title class_">Array</span>);<span class="comment">//true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a <span class="keyword">instanceof</span> <span class="title class_">Object</span>);<span class="comment">//true,在数组的原型链上也能找到Object构造函数</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b <span class="keyword">instanceof</span> <span class="title class_">Array</span>);<span class="comment">//false</span></span><br></pre></td></tr></table></figure> （2）constructor判断
+也可用于判断某个实例的构造函数：p.constructor === Person <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">constructor</span>) <span class="comment">//function Array()&#123; [native code] &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">constructor</span> === <span class="title class_">Array</span>) <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+eg: <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">constructor</span> == <span class="title class_">Array</span>);<span class="comment">//true</span></span><br><span class="line"><span class="keyword">const</span> b = [];</span><br><span class="line"><span class="comment">//constructor属性被修改之后，无法判断了。</span></span><br><span class="line">b.<span class="property">contrtuctor</span> = <span class="title class_">Object</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b.<span class="property">constructor</span> == <span class="title class_">Array</span>);<span class="comment">//false</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b.<span class="property">constructor</span> == <span class="title class_">Object</span>);<span class="comment">//true</span></span><br></pre></td></tr></table></figure></p>
+<p>（3）用Object的toString方法
+再加上call或者apply方法来改变toString方法的执行上下文来判断，每一个继承自Object的对象都拥有toString的方法。如果一个对象的toString方法<strong>没有被重写过的话</strong>，那么toString方法将会返回"[object
+type]"。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [<span class="string">&#x27;Hello&#x27;</span>,<span class="string">&#x27;Howard&#x27;</span>];</span><br><span class="line"><span class="keyword">const</span> b = &#123;<span class="number">0</span>:<span class="string">&#x27;Hello&#x27;</span>,<span class="number">1</span>:<span class="string">&#x27;Howard&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> c = <span class="string">&#x27;Hello Howard&#x27;</span>;</span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toStrisng</span>.<span class="title function_">call</span>(a);<span class="comment">//&quot;[object Array]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(b);<span class="comment">//&quot;[object Object]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(c);<span class="comment">//&quot;[object String]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">apply</span>(a);<span class="comment">//&quot;[object Array]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">apply</span>(b);<span class="comment">//&quot;[object Object]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">apply</span>(c);<span class="comment">//&quot;[object String]&quot;</span></span><br></pre></td></tr></table></figure>
+<p>eg: <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">isArray</span> = (<span class="params">something</span>)=&gt;&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(something) === <span class="string">&#x27;[object Array]&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line">cosnt a = [];</span><br><span class="line"><span class="keyword">const</span> b = &#123;&#125;;</span><br><span class="line"><span class="title function_">isArray</span>(a);<span class="comment">//true</span></span><br><span class="line"><span class="title function_">isArray</span>(b);<span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//作死重写了toString方法</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&#x27;你吃过了么？&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//调用String方法</span></span><br><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(a);<span class="comment">//弹框你吃过了么？</span></span><br></pre></td></tr></table></figure> （4）用Array对象的isArray方法判断 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="title class_">Array</span>.<span class="title function_">isArray</span>(a);<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+（5）其他：typeof</p>
+<p><strong>注意</strong>：typeof
+只能用来判断基本类型和函数。对于数组、对象和String()等包装类型均返回Object，不能辨别。</p>
+<h2 id="函数柯里化">函数柯里化</h2>
+<h2 id="event-loop">event loop</h2>
+<blockquote>
+<p>https://juejin.im/post/6844903670291628046#heading-4</p>
+</blockquote>
+<p>宏任务队列，macrotask || tasks - setTimeout - setInterval -
+setImmediate(node独有) - requestAnimationFrame(浏览器独有) - I/O - UI
+rendering(浏览器独有) 微任务队列，microtask || jobs -
+process.nextTick(node独有) - Promise - Object.observe - MutationObserve
+-</p>
+<p><strong>优先运行微任务队列的任务</strong>。</p>
+<h2 id="类数组转数组">类数组转数组</h2>
+<p>类数组是具有<strong>length</strong>属性，但不具有数组原型上的方法。
+比如说arguments，DOM操作返回的结果就是类数组。类数组转数组方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>)</span><br><span class="line"><span class="title class_">Array</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">slice</span>.<span class="title function_">call</span>(<span class="variable language_">arguments</span>) </span><br><span class="line">[...<span class="variable language_">arguments</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="节流">节流</h2>
+<blockquote>
+<p>一段时间内只能触发一次，如果这段时间触发多次时间，只有第一次生效会触发回调函数，一段时间过后才能再次触发(n秒内第一次生效)</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onclick=<span class="string">&quot;invoke()&quot;</span>&gt;click&lt;/button&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="keyword">function</span> <span class="title function_">sayHi</span>(<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;hihi&quot;</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="keyword">function</span> <span class="title function_">throttle</span>(<span class="params">fn, delay</span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="keyword">let</span> flag = <span class="literal">true</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">			<span class="comment">// 返回一个包装过的函数</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">          <span class="keyword">if</span> (flag) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            flag = <span class="literal">false</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;hahah&quot;</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                flag = <span class="literal">true</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            &#125;, delay);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            <span class="keyword">return</span> <span class="title function_">fn</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">          &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      &#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="comment">// 初始化节流函数 </span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="keyword">var</span> invoke = <span class="title function_">throttle</span>(sayHi, <span class="number">3000</span>)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="防抖">防抖</h2>
+<blockquote>
+<p>在事件被触发时，延迟n秒再触发回调函数，如果n秒又触发了事件，则会重新开始计算时间(n秒内最后一次生效)</p>
+</blockquote>
+<h2 id="virtual-dom虚拟dom算法">Virtual DOM（虚拟DOM）算法</h2>
+<blockquote>
+<p>参考https://juejin.im/entry/5aedcfa351882506a36c664c 1.
+用JavaScript对象结构表示DOM树的结构；然后用这个树构建一个真正的DOM树，插入文档中
+2.
+当状态变更的时候，重新构造一颗新的对象树；然后用新的树和旧的树进行比较，记录两个树的差异
+3. 把步骤2所记录的差异应用到步骤1所构建的真正的DOM树上，视图更新
+<strong>Virtual DOM 本质上就是在 JS 和 DOM 之间做了一个缓存。</strong>
+## 继承 1.原型与继承关系</p>
+</blockquote>
+<blockquote>
+<p>原型与实例的关系可以通过两种方式来确定。</p>
+</blockquote>
+<ul>
+<li>instanceof
+如果一个实例的原型链中出现过相应的构造函数，则instanceof返回true</li>
+<li>isPrototypeOf()方法 原型链中的每个原型都可以调用这个方法
+<strong>eg：Object.prototype.isPrototypeOf(instance)
+SubType.prototype.isPrototypeOf(instance)</strong></li>
+</ul>
+<p>2.原型链</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父类</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SuperType</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">colors</span> = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">size</span> = <span class="string">&quot;small&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 子类</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SubType</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="comment">//继承SuperType</span></span><br><span class="line"><span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="keyword">new</span> <span class="title class_">SuperType</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance1 = <span class="keyword">new</span> <span class="title class_">SubType</span>();</span><br><span class="line"><span class="comment">// 修改instance1的colors属性</span></span><br><span class="line">instance1.<span class="property">colors</span>.<span class="title function_">push</span>(<span class="string">&quot;black&quot;</span>);</span><br><span class="line">instance1.<span class="property">size</span> = <span class="string">&quot;medium&quot;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance1.<span class="property">colors</span>); <span class="comment">//red,blue,green,black</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance1.<span class="property">size</span>);</span><br><span class="line"><span class="keyword">let</span> instance2 = <span class="keyword">new</span> <span class="title class_">SubType</span>();</span><br><span class="line"><span class="comment">// instance2的colors属性也被修改，可见colors属性是被所有实例共享的</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance2.<span class="property">colors</span>); <span class="comment">//red,blue,green,black</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance2.<span class="property">size</span>);</span><br></pre></td></tr></table></figure>
+<p>缺点：</p>
+<ol type="1">
+<li>原型中包含的引用值会在所有实例间共享</li>
+<li>子类型在实例化时不能给父类型的构造函数传参</li>
+</ol>
+<p>3.盗用构造函数</p>
+<blockquote>
+<p>使用apply()和call()方法以新创建的对象为上下文执行构造函数</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父类</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SuperType</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">colors</span> = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 子类</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SubType</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 继承superType</span></span><br><span class="line">  <span class="title class_">SuperType</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance1 = <span class="keyword">new</span> <span class="title class_">SubType</span>();</span><br><span class="line">instance1.<span class="property">colors</span>.<span class="title function_">push</span>(<span class="string">&quot;black&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance1.<span class="property">colors</span>); <span class="comment">// &quot;red,blue,green,black&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance2 = <span class="keyword">new</span> <span class="title class_">SubType</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance2.<span class="property">colors</span>); <span class="comment">// &quot;red,blue,green&quot;</span></span><br></pre></td></tr></table></figure>
+<p>​ ==<strong><em>相当于新的 SubType 对象上运行了
+SuperType()函数中的所有初始化代码。结果就是每个实例都会有自己的 colors
+属性。</em></strong>==</p>
+<p>盗用构造函数实现继承的另一个好处就是可以传递参数给父类构造函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">SuperType</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SubType</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 继承 SuperType 并传参 SuperType.call(this, &quot;Nicholas&quot;);</span></span><br><span class="line">  <span class="title class_">SuperType</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>, <span class="string">&quot;zhunh&quot;</span>)</span><br><span class="line">  <span class="comment">// 实例属性</span></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = <span class="number">29</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> instance = <span class="keyword">new</span> <span class="title class_">SubType</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance.<span class="property">name</span>); <span class="comment">// &quot;Nicholas&quot;; console.log(instance.age); // 29</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance.<span class="property">age</span>);</span><br></pre></td></tr></table></figure>
+<p>缺点：</p>
+<ol type="1">
+<li>实例并不是父类的实例，只是子类的实例</li>
+<li>只能继承父类的实例属性和方法，不能继承父类原型对象上的属性和方法</li>
+<li>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</li>
+</ol>
+<p>4.组合继承</p>
+<blockquote>
+<p>综合原型链和构造函数继承的优点，基本的思路是使用原型链继承原型上的属性和方法，而通过盗用构造函数继承实例属性。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">SuperType</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">colors</span> = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">SuperType</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">sayName</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// let spt = new SuperType()</span></span><br><span class="line"><span class="comment">// console.log(spt.__proto__.__proto__.constructor)</span></span><br><span class="line"><span class="comment">// console.log(SuperType.prototype)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SubType</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="comment">// 继承属性</span></span><br><span class="line">  <span class="title class_">SuperType</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>, name);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 继承方法</span></span><br><span class="line"><span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="keyword">new</span> <span class="title class_">SuperType</span>();</span><br><span class="line"></span><br><span class="line"><span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">sayAge</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">age</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance1 = <span class="keyword">new</span> <span class="title class_">SubType</span>(<span class="string">&quot;zhunh&quot;</span>, <span class="number">22</span>);</span><br><span class="line">instance1.<span class="property">colors</span>.<span class="title function_">push</span>(<span class="string">&quot;black&quot;</span>); </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance1.<span class="property">colors</span>); <span class="comment">//&quot;red,blue,green,black&quot;</span></span><br><span class="line">instance1.<span class="title function_">sayName</span>(); 	<span class="comment">//zhunh</span></span><br><span class="line">instance1.<span class="title function_">sayAge</span>(); 	<span class="comment">//22</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance2 = <span class="keyword">new</span> <span class="title class_">SubType</span>(<span class="string">&quot;Greg&quot;</span>, <span class="number">27</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(instance2.<span class="property">colors</span>); <span class="comment">//&quot;red,blue,green&quot;</span></span><br><span class="line">instance2.<span class="title function_">sayName</span>(); 	<span class="comment">//reg</span></span><br><span class="line">instance2.<span class="title function_">sayAge</span>()		<span class="comment">//27</span></span><br></pre></td></tr></table></figure>
+<p>5.原型式继承 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 核心函数 */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">object</span>(<span class="params">o</span>) &#123;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">F</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line">  F.<span class="property"><span class="keyword">prototype</span></span> = o;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">F</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;zhunh&quot;</span>,</span><br><span class="line">  <span class="attr">friends</span>: [<span class="string">&quot;Tom, Jack, Van&quot;</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> anotherPerson = <span class="title function_">object</span>(person);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(anotherPerson);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> yetAnotherPerson = <span class="title function_">object</span>(person);</span><br><span class="line">yetAnotherPerson.<span class="property">name</span> = <span class="string">&quot;Linda&quot;</span>;</span><br><span class="line">yetAnotherPerson.<span class="property">friends</span>.<span class="title function_">push</span>(<span class="string">&quot;Barbie&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(person.<span class="property">friends</span>); <span class="comment">// &quot;Shelby,Court,Van,Rob,Barbie&quot;</span></span><br></pre></td></tr></table></figure></p>
+<p>​ <strong>person.friends 不仅是 person 的属性，也会跟 anotherPerson 和
+yetAnotherPerson 共享.</strong></p>
+<p>​ ECMAScript 5 通过增加
+Object.create()方法将原型式继承的概念规范化了。这个方法接收两个
+参数:作为新对象原型的对象，以及给新对象定义额外属性的对象(第二个可选)。在只有一个参数时，
+Object.create()与这里的 object()方法效果相同:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> anotherPerson = <span class="title class_">Object</span>.<span class="title function_">create</span>(person);</span><br><span class="line"><span class="keyword">let</span> yetAnotherPerson = <span class="title class_">Object</span>.<span class="title function_">create</span>(person);</span><br></pre></td></tr></table></figure>
+<p>​
+<strong>原型式继承非常适合不需要单独创建构造函数，但仍然需要在对象间共享信息的场合。但要记住，
+属性中包含的引用值始终会在相关对象间共享，跟使用原型模式是一样的。</strong>
+6.寄生式继承</p>
+<ol start="7" type="1">
+<li></li>
+</ol>
+<h2 id="object.create和new的区别">Object.create和new的区别</h2>
+<blockquote>
+<p>new
+关键字创建的对象会保留构造函数的属性，而Object.create创建的对象不会</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title class_">Base</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = <span class="string">&quot;一路向北&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Base</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">age</span> = <span class="number">25</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="title class_">Base</span>()</span><br><span class="line"><span class="keyword">var</span> b = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="title class_">Base</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b)</span><br></pre></td></tr></table></figure>
+<h2 id="字节面试题">字节面试题：</h2>
+<p>1.event loop</p>
+<p>2.BFC IFC</p>
+<p>3.岛屿问题</p>
+<p>4.N叉树最大深度</p>
+<p>5.三栏布局</p>
+<p>位(bit) ：计算机内部数据 存储的最小单位</p>
+<p>字节(byte)：计算机中数据处理的基本单位，1B(byte,字节) = 8bit(位)</p>
+<p>ASCIIS码：</p>
+<p>1个英文字母 = 1个字节的空间</p>
+<p>1个中文汉字 = 2个字节的空间</p>
+<h2 id="事件">事件</h2>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="zhunh 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/14/2020-07-14-GO%E7%AC%94%E8%AE%B0/" rel="prev" title="GO笔记">
+                  <i class="fa fa-chevron-left"></i> GO笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/16/2020-09-16-%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/" rel="next" title="笔记-跨域问题">
+                  笔记-跨域问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhunh</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">79k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:12</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

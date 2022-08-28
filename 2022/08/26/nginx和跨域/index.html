@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nginx  内容为 nginx基本使用，nginx代理跨域理解  Nginx是一个轻量级、高性能、稳定性高、并发性好的HTTP和反向代理服务器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx和跨域">
+<meta property="og:url" content="http://example.com/2022/08/26/nginx%E5%92%8C%E8%B7%A8%E5%9F%9F/index.html">
+<meta property="og:site_name" content="code-learing">
+<meta property="og:description" content="nginx  内容为 nginx基本使用，nginx代理跨域理解  Nginx是一个轻量级、高性能、稳定性高、并发性好的HTTP和反向代理服务器。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-26T14:59:50.780Z">
+<meta property="article:modified_time" content="2022-08-28T02:04:47.824Z">
+<meta property="article:author" content="zhunh">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/08/26/nginx%E5%92%8C%E8%B7%A8%E5%9F%9F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/08/26/nginx%E5%92%8C%E8%B7%A8%E5%9F%9F/","path":"2022/08/26/nginx和跨域/","title":"nginx和跨域"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>nginx和跨域 | code-learing</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">code-learing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hi there, my friend</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx"><span class="nav-number">1.</span> <span class="nav-text">nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5"><span class="nav-number">2.</span> <span class="nav-text">同源策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhunh"
+      src="/images/lcf.jpeg">
+  <p class="site-author-name" itemprop="name">zhunh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhunh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhunh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/26/nginx%E5%92%8C%E8%B7%A8%E5%9F%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/lcf.jpeg">
+      <meta itemprop="name" content="zhunh">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code-learing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="nginx和跨域 | code-learing">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nginx和跨域
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-26 22:59:50" itemprop="dateCreated datePublished" datetime="2022-08-26T22:59:50+08:00">2022-08-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-28 10:04:47" itemprop="dateModified" datetime="2022-08-28T10:04:47+08:00">2022-08-28</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="nginx">nginx</h3>
+<blockquote>
+<p>内容为 nginx基本使用，nginx代理跨域理解</p>
+</blockquote>
+<p>Nginx是一个轻量级、高性能、稳定性高、并发性好的HTTP和反向代理服务器。</p>
+<span id="more"></span>
+<p>（1）常用操作 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动</span></span><br><span class="line">nginx</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关闭</span></span><br><span class="line">nginx -s stop</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">修改了配置，重新加载</span></span><br><span class="line">nginx -s reload</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">检查配置文件格式</span></span><br><span class="line">nginx -t</span><br></pre></td></tr></table></figure>
+配置文件地址：mac=&gt;/usr/local/etc/nginx/nginx.conf ,
+docker=&gt;/etc/nginx</p>
+<p><a
+target="_blank" rel="noopener" href="https://juejin.im/post/6844903575210967048">配置文件结构说明</a></p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">user  nginx;</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">error_log  /var/log/nginx/error.log warn;</span><br><span class="line">pid        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       /etc/nginx/mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">                      &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">                      &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">    access_log  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        listen  [::]:80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line">        #access_log  /var/log/nginx/host.access.log  main;</span><br><span class="line">        #接收到请求，去/usr/share/nginx/html目录下找静态资源，index.html或index.htm</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /usr/share/nginx/html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">            #proxy_pass http://localhost:8081/;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   /usr/share/nginx/html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    #gzip  on;</span><br><span class="line">    #引入conf.d文件夹下以.conf结尾的配置文件</span><br><span class="line">    include /etc/nginx/conf.d/*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（2）代理</p>
+<p>数据请求：浏览器=&gt;代理服务器=&gt;目标服务器</p>
+<p>数据返回：目标服务器=&gt;代理服务器=&gt;浏览器</p>
+<p>例子：科学上网。</p>
+<p><strong>从服务器的角度，没有办法分辨请求来自代理还是浏览器，代理的本质是隐藏了客户端。</strong></p>
+<p>（3）反向代理</p>
+<p>数据请求：浏览器=&gt;反向代理服务器=&gt;目标服务器</p>
+<p>数据返回：目标服务器=&gt;反向代理服务器=&gt;浏览器</p>
+<p><strong>流程和代理差不多，但是代理在浏览器端配置，而反向代理靠近服务器，在服务端配置。</strong></p>
+<p><strong>从浏览器的角度，不知道请求最终被哪个服务器所处理，反向代理的本质是隐藏了服务端。</strong></p>
+<h3 id="同源策略">同源策略</h3>
+<p>（1）同源策略<a
+target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">MDN</a></p>
+<p>​
+浏览器的一个安全策略，限制同源<strong>[协议、域名、端口都一致]</strong>的文档以及它们加载的脚本怎么与另一个源的资源交互。同源策略控制不同源之间的交互，这些交互通常分三类：</p>
+<ul>
+<li><p>跨域<strong>写操作</strong>（Cross-origin
+writes）<em>一般是被允许的</em>。例如链接（links），重定向以及表单提交。</p></li>
+<li><p>跨域<strong>资源嵌入</strong>（Cross-origin
+embedding）一般是被允许（后面会举例说明）。</p></li>
+<li><p>跨域<strong>读操作</strong>（Cross-origin
+reads）<em>一般是不被允许的</em>，但常可以通过内嵌资源来巧妙的进行读取访问</p></li>
+</ul>
+<p>资源嵌入示例：</p>
+<p>&lt;script src="..."&gt;&lt;/script&gt;
+标签嵌入跨域脚本。语法错误信息只能被同源脚本中捕捉到。 &lt;link
+rel="stylesheet" href="..."&gt;
+标签嵌入CSS。由于CSS的松散的语法规则，CSS的跨域需要一个设置正确的 HTTP
+头部 Content-Type 。 通过 &lt;img&gt;
+展示的图片。支持的图片格式包括PNG,JPEG,GIF,BMP,SVG,... 通过
+&lt;video&gt; 和 &lt;audio&gt; 播放的多媒体资源。 通过 &lt;object&gt;、
+&lt;embed&gt; 和 &lt;applet&gt; 嵌入的插件。 通过 <span class="citation"
+data-cites="font-face">@font-face</span>
+引入的字体。一些浏览器允许跨域字体（ cross-origin
+fonts），一些需要同源字体（same-origin fonts）。 通过&lt;iframe&gt;
+载入的任何资源。站点可以使用 X-Frame-Options
+消息头来阻止这种形式的跨域交互。</p>
+<p>（2）跨域方案</p>
+<p>jsonp |type|地址| |--|--| |前端|| |后端|http://localhost:8500|</p>
+<p>前端：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> dataHandle = <span class="keyword">function</span>(<span class="params">data</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">alert</span>(</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;jsonp调用服务端结果：&quot;</span> +</span></span><br><span class="line"><span class="language-javascript">        data.<span class="property">result</span></span></span><br><span class="line"><span class="language-javascript">    );</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 拼script</span></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> url = <span class="string">&#x27;http://127.0.0.1:8500?callback=dataHandle&amp;name=jack&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> script = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  script.<span class="title function_">setAttribute</span>(<span class="string">&#x27;src&#x27;</span>, url);</span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&#x27;head&#x27;</span>)[<span class="number">0</span>].<span class="title function_">appendChild</span>(script);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>后端：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&quot;http&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">&quot;url&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> querystring = <span class="built_in">require</span>(<span class="string">&quot;querystring&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> hostname = <span class="string">&quot;127.0.0.1&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> port = <span class="number">8500</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>();</span><br><span class="line">server.<span class="title function_">on</span>(<span class="string">&quot;clientError&quot;</span>, <span class="function">(<span class="params">err, socket</span>) =&gt;</span> &#123;</span><br><span class="line">  socket.<span class="title function_">end</span>(<span class="string">&quot;HTTP/1.1 400 Bad Request\r\n\r\n&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.<span class="title function_">on</span>(<span class="string">&quot;request&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> arg = url.<span class="title function_">parse</span>(req.<span class="property">url</span>).<span class="property">query</span>;</span><br><span class="line">  <span class="keyword">var</span> params = querystring.<span class="title function_">parse</span>(arg);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> data = &#123;</span><br><span class="line">      <span class="attr">jack</span>:<span class="string">&quot;i am jack&quot;</span>,</span><br><span class="line">      <span class="attr">tom</span>:<span class="string">&quot;i am tom&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//识别请求和参数</span></span><br><span class="line">  <span class="keyword">if</span> (params.<span class="property">callback</span> &amp;&amp; params.<span class="property">callback</span> == <span class="string">&quot;dataHandle&quot;</span>) &#123;</span><br><span class="line">    <span class="comment">//将查询数据和调用函数表达式拼接返回给客户端</span></span><br><span class="line">    res.<span class="title function_">write</span>(<span class="string">`dataHandle(&#123;&quot;result&quot;:&quot;<span class="subst">$&#123;data[params.name]&#125;</span>&quot;&#125;);`</span>)   </span><br><span class="line">    res.<span class="title function_">end</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.<span class="title function_">listen</span>(port, hostname, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Server running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>开启跨域资源共享（Cross-oringin resource sharing，CORS）<a
+target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS">MDN</a></p>
+<table>
+<thead>
+<tr class="header">
+<th>type</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>前端</td>
+<td>http://localhost:8081</td>
+</tr>
+<tr class="even">
+<td>后端</td>
+<td>http://localhost:9000</td>
+</tr>
+</tbody>
+</table>
+<p>在后端设置HTTP响应首部字段 Access-Control-Allow-Origin：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.<span class="title function_">setHeader</span>(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;http://localhost:8081&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>过程</strong>：浏览器通过8081直接请求9000服务端口</p>
+<p>nginx反向代理</p>
+<table>
+<thead>
+<tr class="header">
+<th>type</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>前端</td>
+<td>http://localhost:8081</td>
+</tr>
+<tr class="even">
+<td>后端</td>
+<td>http://localhost:8000</td>
+</tr>
+<tr class="odd">
+<td>nginx</td>
+<td>代理8866端口，来自http://localhost:8866的请求转发到8000</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen       8866;</span><br><span class="line">  server_name  127.0.0.1;  # 需要中转的请求</span><br><span class="line">  location / &#123;</span><br><span class="line">    proxy_pass http://127.0.0.1:8000; # 反向代理后端地址</span><br><span class="line">    index index.html index.htm;</span><br><span class="line">    # 跨域配置，给浏览器设置响应头</span><br><span class="line">    add_header Access-Control-Allow-Origin http://localhost:8081; </span><br><span class="line">    add_header Access-Control-Allow-Credentials true;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;   </span><br></pre></td></tr></table></figure>
+<p><strong>过程</strong>：浏览器从8081端口向nginx的8866端口请求数据，nginx反向代理8866端口，将对8866端口的请求转发给真实服务端接口8000.</p>
+<p><strong>解析</strong>：浏览器从8081端口向8866端口请求资源是跨域行为，须在nginx配置跨域如上。nginx到8000的代理请求不经过浏览器，不受浏览器的同源策略影响，可以访问。</p>
+<h3 id="总结">总结：</h3>
+<p>​ nginx反向代理和CORS都是通过设置HTTP响应首部字段
+Access-Control-Allow-Origin，开启跨域资源共享机制。不同点在于，nginx反向代理是nginx向浏览器开放，因而不需要服务器额外配置，而CORS是服务端向浏览器开放，需在服务端配置。</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+        <div class="popular-posts-date">2020-02-12</div>
+      <div class="popular-posts-title"><a href="2020/02/12/2020-02-12-Vue和node在CentOS8中的运维/" rel="bookmark">Vue和node在CentOS8中的运维</a></div>
+        <div class="popular-posts-excerpt"><p><h2 id="nodejs后台">1.Nodejs后台</h2>
+<p>使用pm2管理node进程</p></p></div>
+    </li>
+    <li class="popular-posts-item">
+        <div class="popular-posts-date">2020-02-12</div>
+      <div class="popular-posts-title"><a href="2020/02/12/centos7 nginx 安装和配置/" rel="bookmark"></a></div>
+        <div class="popular-posts-excerpt"><p><h2 id="安装">1.安装</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nginx</span><br></pre></td></tr></table></figure>
+<p>安装目录：<code>/usr/sbin</code>
+配置目录：<code>/etc/nginx</code></p></p></div>
+    </li>
+    <li class="popular-posts-item">
+        <div class="popular-posts-date">2020-09-16</div>
+      <div class="popular-posts-title"><a href="2020/09/16/2020-09-16-跨域问题/" rel="bookmark">笔记-跨域问题</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="zhunh 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/07/2020-12-07-Git%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" rel="prev" title="Git使用笔记">
+                  <i class="fa fa-chevron-left"></i> Git使用笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/26/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1B%E9%A2%98/" rel="next" title="数学建模B题">
+                  数学建模B题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhunh</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">79k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:12</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
